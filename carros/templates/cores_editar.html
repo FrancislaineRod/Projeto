@@ -1,0 +1,45 @@
+{% extends "basico.html" %}
+{% load crispy_forms_tags %}
+{% block conteudo %}
+
+<div class="col-12">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group col-8 col-offset2">
+            {{ form | crispy }}
+        </div>
+
+
+        <div class="modal fade" id="modal-mensagem">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                        <h4 class="modal-title">AVISO</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Cor editada com sucesso!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'cores'%}">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6" align="left">
+                <a href="{% url 'cores' %}">
+                    <button type="button" class="btn btn-light">VOLTAR</button>
+                </a>
+            </div>
+
+            <div class="col-6" align="right">
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-mensagem">SALVAR
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

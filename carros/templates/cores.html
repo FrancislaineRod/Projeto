@@ -1,0 +1,63 @@
+{% extends "basico.html" %}
+{% block titulo%} Cores {%endblock%}
+{% block conteudo %}
+<h1>Cores</h1>
+
+{{opcao}}
+{{opcao_mensagem}}
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Valor</th>
+        <th scope="col">Deletar</th>
+        <th scope="col">Editar</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for cor in cores %}
+    <tr>
+        <th scope="row">{{cor.id}}</th>
+        <td>{{cor.descricao}}</td>
+        <td>{{cor.valor}}</td>
+        <td>
+            <form method="POST"onsubmit="return confirm('Deseja realmente deletar esta montadora?')">
+                <input type="hidden" name="id" value="{{cor.id}}">
+                <a href="{% url 'cores'%}">
+
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-times"></i></button>
+                </a>
+            </form>
+
+        </td>
+        <td>
+            <a href="{% url 'cores_editar' cor.id %}">
+                <button type="button" class="btn btn-secondary"><i class="fas fa-edit"></i></button>
+            </a>
+        </td>
+
+
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+</div>
+<div class="col-12 row">
+    <div class="col-6" align="left">
+        <a href="{% url 'index'  %}">
+            <button type="button" class="btn btn-light btn-lg rounded"><i class="fas fa-house "></i> Home
+            </button>
+        </a>
+    </div>
+    <div class="col-6" align="right">
+        <a href="{% url 'cores_cadastrar' %}">
+            <button type="button" class="btn btn-primary">Criar</button>
+        </a>
+    </div>
+</div>
+{% endblock %}

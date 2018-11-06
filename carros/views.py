@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from carros.forms import CorForm
 from .models import *
 from django.views.generic import TemplateView
 import pdb;
@@ -62,7 +64,6 @@ def montadoras(request, opcao=None):
         temp.delete()
         opcao = True
 
-
     contexto = {
         "montadoras": Montadora.objects.all(),
         'opcao': opcao,
@@ -106,3 +107,77 @@ def montadora_cadastrar(request):
         "formMontadora": form,
     }
     return render(request, '../templates/montadora_cadastrar.html', contexto)
+
+
+@csrf_exempt
+def mostrar_cores(request, opcao=None):
+    if opcao == 1:
+        opcao_mensagem = 'Cor cadastrada com sucesso!'
+    else:
+        if opcao == 2:
+            opcao_mensagem = 'Cor editada com sucesso!'
+        else:
+            if opcao==3:
+                opcao_mensagem = "Cor removida com sucesso"
+            else:
+                opcao_mensagem = None
+
+
+    if request.method == 'POST':
+        idcor = request.POST.get('id')
+        temp = Cor.objects.get(id=idcor)
+        temp.delete()
+       # opcao = True
+
+    contexto = {
+        "cores": Cor.objects.all(),
+        "opcao":opcao,
+        "opcao_mensagem":opcao_mensagem
+
+    }
+    return render(request, '../templates/cores.html', contexto)
+
+
+def cores_cadastrar(request):
+    form = CorForm(request.POST or None)
+    if form.is_valid() and request.POST:
+        form.save()
+        return redirect('cores')
+    contexto = {
+        "formCor": form,
+    }
+    return render(request, '../templates/cores_cadastrar.html', contexto)
+
+
+'''
+def cores_editar(request,id):
+    cor = get_object_or_404(Cor, id=id)
+
+    # APENAS UM
+    if request.method == 'POST':
+        cor.descricao = request.POST.get('descricao')
+        cor.valor = request.POST.get('valor')
+        cor.save()
+        return redirect('cores')
+
+    else:
+        contexto = {
+            'cores': cor
+        }
+    return render(request, '../templates/cores_editar.html', contexto)
+'''
+
+
+def cores_editar(request, id):
+    cor = get_object_or_404(Cor, id=id)
+    form = CorForm(request.POST or None, instance=cor)
+    # APENAS UM
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('cores_opcao',opcao = 2)
+    else:
+        contexto = {
+            'cores': cor,
+            'form': form
+        }
+    return render(request, '../templates/cores_editar.html', contexto)

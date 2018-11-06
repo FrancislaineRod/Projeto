@@ -1,5 +1,4 @@
 {% extends "basico.html" %}
-{% block titulo%} Cores cadastrar {%endblock%}
 {% load crispy_forms_tags %}
 {% block conteudo %}
 
@@ -7,11 +6,11 @@
     <form method="POST">
         {% csrf_token %}
         <div class="form-group col-8 col-offset2">
-            {{ formMontadora | crispy }}
+            {{ formCor | crispy }}
         </div>
         <div class="row">
             <div class="col-6" align="left">
-                <a href="{% url 'montadora' %}">
+                <a href="{% url 'cores' %}">
                     <button type="button" class="btn btn-light">VOLTAR</button>
                 </a>
             </div>
